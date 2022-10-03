@@ -15,19 +15,27 @@ const changeModalState = (state) => {
             item.addEventListener(event, () => {
                 switch (item.nodeName) {
                     case 'SPAN' :
-                        console.log('span');
+                        state[prop] = i;
                         break;
                     case 'INPUT' :
                         if (item.getAttribute('type') === 'checkbox') {
-                            console.log('checkbox');
+                            i === 0 ? state[prop] = 'Холодное' : state[prop] = 'Теплое';
+                            elem.forEach((box, j) => {
+                                box.checked = false;
+                                if (i == j) {
+                                    box.checked = true;
+                                }
+                            });
                         } else {
-                            console.log('input');
+                            state[prop] = item.value;
                         }
                         break;
                     case 'SELECT' :
-                        console.log('select');
+                        state[prop] = item.value;
                         break;
                 }
+
+                console.log(state);
             });
         });
     }
