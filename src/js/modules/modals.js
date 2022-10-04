@@ -1,3 +1,5 @@
+import modalState from '../main';
+
 const modals = () => {
     function bindModal (triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
         const trigger = document.querySelectorAll(triggerSelector),
@@ -52,14 +54,20 @@ const modals = () => {
         }, time);
     }
 
-    const finalModalButton = document.querySelector('#final');
+    const finalModal = document.querySelector('.popup_calc_end');
     function hideFinalModal (selector, time) {
         setTimeout(function () {
             document.querySelector(selector).style.display = 'none';
             document.body.style.overflow = '';
+            console.log('finalState', modalState);
+            for (let prop in modalState) {
+                delete modalState[prop];
+            }
+            console.log('newFinalState', modalState);
         }, time);
     }
-    finalModalButton.addEventListener('click', () => hideFinalModal('.popup_calc_end', 2000));
+
+    finalModal.addEventListener('submit', () => hideFinalModal('.popup_calc_end', 2000));
 
 
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
