@@ -1,4 +1,5 @@
 import modalState from '../main';
+import checkModalsInputs from "./checkModalsInputs";
 
 const modals = () => {
     function bindModal (triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
@@ -6,6 +7,10 @@ const modals = () => {
             modal = document.querySelector(modalSelector),
             close = document.querySelector(closeSelector),
             windows = document.querySelectorAll('[data-modal]');
+
+        let windowFormStatus = document.createElement('div');
+        windowFormStatus.textContent = 'Вы забыли кое-что выбрать';
+        windowFormStatus.classList.add('status');
 
         trigger.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -17,8 +22,10 @@ const modals = () => {
                    item.style.display = 'none';
                 });
 
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+
+
                 //document.body.classList.add('modal-open');
             });
         });
@@ -63,6 +70,10 @@ const modals = () => {
             for (let prop in modalState) {
                 delete modalState[prop];
             }
+            const windowStatus = document.querySelectorAll('status');
+            windowStatus.forEach(item => {
+                item.remove();
+            });
             console.log('newFinalState', modalState);
         }, time);
     }
