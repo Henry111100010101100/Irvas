@@ -1,9 +1,16 @@
+import modalState from '../main';
+import checkModalsInputs from "./checkModalsInputs";
+
 const modals = () => {
     function bindModal (triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
         const trigger = document.querySelectorAll(triggerSelector),
             modal = document.querySelector(modalSelector),
             close = document.querySelector(closeSelector),
             windows = document.querySelectorAll('[data-modal]');
+
+        let windowFormStatus = document.createElement('div');
+        windowFormStatus.textContent = 'Вы забыли кое-что выбрать';
+        windowFormStatus.classList.add('status');
 
         trigger.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -15,8 +22,10 @@ const modals = () => {
                    item.style.display = 'none';
                 });
 
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
+                    modal.style.display = 'block';
+                    document.body.style.overflow = 'hidden';
+
+
                 //document.body.classList.add('modal-open');
             });
         });
@@ -52,12 +61,32 @@ const modals = () => {
         }, time);
     }
 
+    const finalModal = document.querySelector('.popup_calc_end');
+    function hideFinalModal (selector, time) {
+        setTimeout(function () {
+            document.querySelector(selector).style.display = 'none';
+            document.body.style.overflow = '';
+            console.log('finalState', modalState);
+            for (let prop in modalState) {
+                delete modalState[prop];
+            }
+            const windowStatus = document.querySelectorAll('status');
+            windowStatus.forEach(item => {
+                item.remove();
+            });
+            console.log('newFinalState', modalState);
+        }, time);
+    }
+
+    finalModal.addEventListener('submit', () => hideFinalModal('.popup_calc_end', 2000));
+
+
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
     bindModal('.phone_link', '.popup', '.popup .popup_close');
     bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close');
     bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
     bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
-    //showModalByTime('.popup', 60000);
+    //showModalByTime('.popup', 600);
 };    
 
 export default modals;

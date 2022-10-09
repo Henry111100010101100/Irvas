@@ -15180,19 +15180,238 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modals__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/modals */ "./src/js/modules/modals.js");
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
+/* harmony import */ var _modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeModalState */ "./src/js/modules/changeModalState.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
 
 
 
+
+ //import checkModalsInputs from "./modules/checkModalsInputs";
+
+ //export default modalState;
 
 window.addEventListener('DOMContentLoaded', () => {
   "use strict";
+
+  let modalState = {};
+  let deadline = '2022-10-09';
+  Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState); //checkModalsInputs;
 
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click');
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])();
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])('.container1', deadline);
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/changeModalState.js":
+/*!********************************************!*\
+  !*** ./src/js/modules/changeModalState.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _checkNumInputs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkNumInputs */ "./src/js/modules/checkNumInputs.js");
+
+
+const changeModalState = state => {
+  const windowForm = document.querySelectorAll('.balcon_icons_img'),
+        windowWidth = document.querySelectorAll('#width'),
+        windowHeight = document.querySelectorAll('#height'),
+        windowType = document.querySelectorAll('#view_type'),
+        windowProfile = document.querySelectorAll('.checkbox');
+  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('#width');
+  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('#height');
+
+  function bindActionToElem(event, elem, prop) {
+    elem.forEach((item, i) => {
+      item.addEventListener(event, () => {
+        switch (item.nodeName) {
+          case 'SPAN':
+            state[prop] = i + 1;
+            break;
+
+          case 'INPUT':
+            if (item.getAttribute('type') === 'checkbox') {
+              i === 0 ? state[prop] = 'Холодное' : state[prop] = 'Теплое';
+              elem.forEach((box, j) => {
+                box.checked = false;
+
+                if (i == j) {
+                  box.checked = true;
+                }
+              });
+            } else {
+              state[prop] = item.value;
+            }
+
+            break;
+
+          case 'SELECT':
+            state[prop] = item.value;
+            break;
+        }
+
+        console.log(state);
+      });
+    });
+  }
+
+  bindActionToElem('click', windowForm, 'form');
+  bindActionToElem('input', windowWidth, 'width');
+  bindActionToElem('input', windowHeight, 'height');
+  bindActionToElem('change', windowType, 'type');
+  bindActionToElem('change', windowProfile, 'profile');
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (changeModalState);
+
+/***/ }),
+
+/***/ "./src/js/modules/checkModalsInputs.js":
+/*!*********************************************!*\
+  !*** ./src/js/modules/checkModalsInputs.js ***!
+  \*********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _changeModalState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./changeModalState */ "./src/js/modules/changeModalState.js");
+
+ //import modalState from "../main";
+//const checkModalsInputs = () => {
+// const windowForm = document.querySelectorAll('.balcon_icons_img'),
+//     windowWidth = document.querySelector('#width'),
+//     windowHeight = document.querySelector('#height'),
+//     windowType = document.querySelectorAll('#view_type'),
+//     windowProfile = document.querySelectorAll('.checkbox'),
+//     buttonStatus = document.querySelector('.popup_calc_button');
+// let windowFormStatus = document.createElement('div');
+// windowFormStatus.textContent = 'Вы забыли кое-что выбрать';
+// windowFormStatus.classList.add('status');status
+// buttonStatus.addEventListener('click', () => {
+//     if (!!modalState.form && !!modalState.width && !!modalState.height) {
+//     console.log(true);
+//     console.log(modalState.form);
+//     console.log(windowHeight);
+//     //windowFormStatus.remove();
+//     buttonStatus.removeChild(windowFormStatus);
+//     } else {
+//         buttonStatus.appendChild(windowFormStatus);
+//         console.log('error');
+//         event.stopImmediatePropagation();
+//     }
+// });
+// const checkNextStep = (checkButton, prop1, prop2, prop3) => {
+//     const check = document.querySelector(checkButton),
+//         elem2 = document.querySelector(prop2),
+//         elem3 = document.querySelector(prop3);
+//
+//     console.log(modalState);
+//     console.log(elem2, elem3);
+// function validation(checkButton, elem1, elem2, elem3) {
+//     const check = document.querySelector(checkButton);
+//     let windowStatus = document.createElement('div');
+//     windowStatus.textContent = 'Вы забыли кое-что выбрать';
+//     windowStatus.classList.add('status');
+//
+//     if (elem1 && elem2 && elem3) {
+//         console.log(true);
+//         windowStatus.remove();
+//         console.log(elem1, elem2, elem3);
+//     } else {
+//         check.appendChild(windowStatus);
+//         console.log('error');
+//         event.stopImmediatePropagation();
+//         console.log('errorState',modalState);
+//     }
+// }
+// check.addEventListener('click', () => {
+//     let windowStatus = document.createElement('div');
+//     windowStatus.textContent = 'Вы забыли кое-что выбрать';
+//     windowStatus.classList.add('status');
+//
+//     if (!!modalState.form && !!modalState.width && !!modalState.height) {
+//         console.log(true);
+//         console.log(modalState.form);
+//
+//         if (windowStatus) {
+//             windowStatus.remove();
+//         }
+//
+//         } else {
+//             check.appendChild(windowStatus);
+//             console.log('error');
+//             event.stopImmediatePropagation();
+//         }
+// if (state !==undefined && elem2.value && elem3.value) {
+//     console.log(true);
+//     windowStatus.remove();
+//     console.log(elem2, elem3);
+//     console.log('trueScenary');
+// } else {
+//     check.appendChild(windowStatus);
+//     console.log('error');
+//     event.stopImmediatePropagation();
+//     console.log('errorState',modalState);
+// }
+//     console.log('newstep', modalState);
+// });
+// if (!!modalState.form && !!modalState.width && !!modalState.height) {
+// console.log(true);
+// console.log(modalState.form);
+// //windowFormStatus.remove();
+//     if (windowStatus.textContent) {
+//         windowStatus.remove();
+//     }
+// } else {
+//     check.appendChild(windowStatus);
+//     console.log('error');
+//     event.stopImmediatePropagation();
+// }
+//         console.log('newstep2');
+//
+//     };
+//
+//     checkNextStep();
+//     //console.log(modalState.form, modalState.width, modalState.height);
+//
+// };
+//
+// export default checkModalsInputs;
+
+/***/ }),
+
+/***/ "./src/js/modules/checkNumInputs.js":
+/*!******************************************!*\
+  !*** ./src/js/modules/checkNumInputs.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.string.replace */ "./node_modules/core-js/modules/es.string.replace.js");
+/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const checkNumInputs = selector => {
+  const numInputs = document.querySelectorAll(selector);
+  numInputs.forEach(item => {
+    item.addEventListener('input', () => {
+      item.value = item.value.replace(/\D/, '');
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (checkNumInputs);
 
 /***/ }),
 
@@ -15205,19 +15424,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.string.replace */ "./node_modules/core-js/modules/es.string.replace.js");
-/* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _checkNumInputs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./checkNumInputs */ "./src/js/modules/checkNumInputs.js");
 
 
-const forms = () => {
+const forms = state => {
   const form = document.querySelectorAll('form'),
-        inputs = document.querySelectorAll('input'),
-        phoneInputs = document.querySelectorAll('input[name="user_phone"]');
-  phoneInputs.forEach(item => {
-    item.addEventListener('input', () => {
-      item.value = item.value.replace(/\D/, '');
-    });
-  });
+        inputs = document.querySelectorAll('input');
+  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('input[name="user_phone"]');
   const messageStatus = {
     loading: 'Загрузка...',
     success: 'Спасибо! Скоро с вами свяжется наш специалист',
@@ -15246,6 +15459,13 @@ const forms = () => {
       formStatus.classList.add('status');
       item.appendChild(formStatus);
       const formData = new FormData(item);
+
+      if (item.getAttribute('data-calc') === 'end') {
+        for (let key in state) {
+          formData.append(key, state[key]);
+        }
+      }
+
       postData('assets/server.php', formData).then(res => {
         console.log(res);
         formStatus.textContent = messageStatus.success;
@@ -15272,12 +15492,20 @@ const forms = () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../main */ "./src/js/main.js");
+/* harmony import */ var _checkModalsInputs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./checkModalsInputs */ "./src/js/modules/checkModalsInputs.js");
+
+
+
 const modals = () => {
   function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
     const trigger = document.querySelectorAll(triggerSelector),
           modal = document.querySelector(modalSelector),
           close = document.querySelector(closeSelector),
           windows = document.querySelectorAll('[data-modal]');
+    let windowFormStatus = document.createElement('div');
+    windowFormStatus.textContent = 'Вы забыли кое-что выбрать';
+    windowFormStatus.classList.add('status');
     trigger.forEach(item => {
       item.addEventListener('click', e => {
         if (e.target) {
@@ -15316,11 +15544,32 @@ const modals = () => {
     }, time);
   }
 
+  const finalModal = document.querySelector('.popup_calc_end');
+
+  function hideFinalModal(selector, time) {
+    setTimeout(function () {
+      document.querySelector(selector).style.display = 'none';
+      document.body.style.overflow = '';
+      console.log('finalState', _main__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+      for (let prop in _main__WEBPACK_IMPORTED_MODULE_0__["default"]) {
+        delete _main__WEBPACK_IMPORTED_MODULE_0__["default"][prop];
+      }
+
+      const windowStatus = document.querySelectorAll('status');
+      windowStatus.forEach(item => {
+        item.remove();
+      });
+      console.log('newFinalState', _main__WEBPACK_IMPORTED_MODULE_0__["default"]);
+    }, time);
+  }
+
+  finalModal.addEventListener('submit', () => hideFinalModal('.popup_calc_end', 2000));
   bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
   bindModal('.phone_link', '.popup', '.popup .popup_close');
   bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close');
   bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
-  bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false); //showModalByTime('.popup', 60000);
+  bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false); //showModalByTime('.popup', 600);
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
@@ -15376,6 +15625,72 @@ const tabs = (headerSelector, tabSelector, contentSelector, activeClass, display
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const timer = (id, deadline) => {
+  const addZero = num => {
+    if (num <= 9) {
+      return '0' + num;
+    } else {
+      return num;
+    }
+  };
+
+  const getTimeRemainig = endtime => {
+    const t = Date.parse(endtime) - Date.parse(new Date()),
+          seconds = Math.floor(t / 1000 % 60),
+          minutes = Math.floor(t / 1000 / 60 % 60),
+          hours = Math.floor(t / (1000 * 60 * 60) % 24),
+          days = Math.floor(t / (1000 * 60 * 60 * 24));
+    return {
+      'total': t,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+    };
+  };
+
+  const setClock = (selector, endtime) => {
+    const timer = document.querySelector(selector),
+          days = timer.querySelector('#days'),
+          hours = timer.querySelector('#hours'),
+          minutes = timer.querySelector('#minutes'),
+          seconds = timer.querySelector('#seconds'),
+          timeInterval = setInterval(updateClock, 1000);
+    updateClock();
+
+    function updateClock() {
+      const t = getTimeRemainig(endtime);
+      days.textContent = addZero(t.days);
+      hours.textContent = addZero(t.hours);
+      minutes.textContent = addZero(t.minutes);
+      seconds.textContent = addZero(t.seconds);
+
+      if (t.total <= 0) {
+        days.textContent = '00';
+        hours.textContent = '00';
+        minutes.textContent = '00';
+        seconds.textContent = '00';
+        clearInterval(timeInterval);
+      }
+    }
+  };
+
+  setClock(id, deadline);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (timer);
 
 /***/ }),
 
