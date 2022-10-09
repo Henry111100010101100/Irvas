@@ -14,7 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let modalState = {};
 
-    let deadline = '2022-10-09';
+    let deadline = '2022-10-15';
 
     changeModalState(modalState);
     //checkModalsInputs;
